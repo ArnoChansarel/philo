@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 13:35:48 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/17 17:50:12 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/19 17:37:44 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 time_to_sleep
 [number_of_times_each_philosopher_must_eat]*/
 
-t_philo	*ft_lstnew(int *content, char **av)
+t_philo	*ft_lstnew(int *content, char **av, pthread_mutex_t *m)
 {
 	t_philo	*ele;
 	
@@ -32,7 +32,8 @@ t_philo	*ft_lstnew(int *content, char **av)
 		ele->times_eat = ft_atoi(av[5]);
 	else
 		ele->times_eat = 0;
-    ele->fork = 1;
+	ele->is_alive = 1;
+	ele->mutex = m;
     ele->next = NULL;
 	return (ele);
 }

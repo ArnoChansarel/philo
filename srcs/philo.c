@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:54:13 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/17 17:49:44 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/19 17:17:32 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ en entree une structure avec
 MALLOC
 1 pour chque struct
 1 tableau d'int
+1 tableau de mutex
 */
 
 
@@ -53,7 +54,7 @@ void	print_list(t_philo *philo, int nb)
 	}
 }
 
-t_philo *create_loop_list(int nb, t_philo *philo, char **argv)
+t_philo *create_loop_list(int nb, t_philo *philo, char **argv, pthread_mutex_t *m)
 {
 	int     i;
 	int		*array;
@@ -64,7 +65,7 @@ t_philo *create_loop_list(int nb, t_philo *philo, char **argv)
 	while (i <= nb)
 	{
 		array[i - 1] = i;
-		ft_lstadd_back(&philo, ft_lstnew(&array[i - 1], argv));
+		ft_lstadd_back(&philo, ft_lstnew(&array[i - 1], argv, &m[i - 1]));
 		i++;
 	}
 	head = ft_lstlast(philo);
@@ -72,42 +73,42 @@ t_philo *create_loop_list(int nb, t_philo *philo, char **argv)
 	return (philo);
 }
 
-// ./philo 3 6000000 1000000 3000000
+// ./philo 3 6000000 5000000 3000000
+/*
+etape 1 : MUTEX
+etape 2 : gestion de la mort
+etape 3 : cas d'erreur*/
+
+
 
 int main(int argc, char **argv)
 {
-	int		pnb = 3;
-	pthread_t   t[pnb];
-	t_philo     *philo = NULL;
+	int 			i;
+	int				pnb = ft_atoi(argv[1]);
+	pthread_t   	t[pnb];
+	pthread_mutex_t	*mutex = NULL;	
+	t_philo     	*philo = NULL;
 
-	(void)argc;
-	(void)argv;
-	// init_philo(&philo, 0);
-	philo = create_loop_list(pnb, philo, argv);
+	i = 0;
+	// pnb = ft_atoi(argv[1]);
 	// print_list(philo, 1);
-	int i = 0;
 	if (argc == 5 || argc == 6)
 	{
+		mutex = create_mutexes(pnb);
+		philo = create_loop_list(pnb, philo, argv, mutex);
+		// create_threads();
 		while(i < pnb)
 		{
-			if (pthread_create(&t[i], NULL, &routine, (void *)philo) != 0)
+			
+			if (pthread_create(&t[i++], NULL, &routine, (void *)philo) != 0)
 			{
 				perror("pthread_create ");
 				exit(EXIT_FAILURE);
 			}
 			philo = philo->next;
-			i++;
 		}
-		i = 0;
-		while (i < pnb)
-		{
-			if (pthread_join(t[i], NULL) != 0)
-			{
-				perror("pthread_join ");
-				exit(EXIT_FAILURE);
-			}
-			i++;
-		}
+		join_threads(t, pnb);
+		destroy_mutexes(mutex, pnb);
 		return (0);
 	}
 	return (1);
