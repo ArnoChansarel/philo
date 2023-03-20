@@ -6,35 +6,30 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 13:35:48 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/19 17:37:44 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/20 18:24:21 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-/*number_of_philosophers time_to_die time_to_eat
-time_to_sleep
-[number_of_times_each_philosopher_must_eat]*/
-
-t_philo	*ft_lstnew(int *content, char **av, pthread_mutex_t *m)
+t_philo	*ft_lstnew(int *content, t_data *data, pthread_mutex_t *m)
 {
 	t_philo	*ele;
 	
+	(void)m;
 	ele = NULL;
 	ele = malloc(sizeof(t_philo));
 	if (!ele)
 		return (NULL);
 	ele->num = content;
-	ele->time_to_die = ft_atoi(av[2]);
-	ele->time_to_eat = ft_atoi(av[3]);
-	ele->time_to_sleep = ft_atoi(av[4]);
-	if (av[5])
-		ele->times_eat = ft_atoi(av[5]);
-	else
-		ele->times_eat = 0;
-	ele->is_alive = 1;
+	ele->time_to_die = &data->time_to_die;
+	ele->time_to_eat = &data->time_to_eat;
+	ele->time_to_sleep = &data->time_to_sleep;
+	ele->times_eat = &data->times_eat;
 	ele->mutex = m;
     ele->next = NULL;
+	ele->last_meal = NULL;
+	gettimeofday(ele->last_meal, NULL);
 	return (ele);
 }
 

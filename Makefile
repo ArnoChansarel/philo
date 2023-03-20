@@ -6,7 +6,7 @@
 #    By: achansar <achansar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/17 13:37:55 by achansar          #+#    #+#              #
-#    Updated: 2023/03/19 17:21:41 by achansar         ###   ########.fr        #
+#    Updated: 2023/03/20 16:27:11 by achansar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,12 @@ CC = gcc
 FLAGS = -Wall -Werror -Wextra 
 SEG = -fsanitize=address -g
 
-#PUSH_SWAP FILES
+#PHILO FILES
 SRC_PATH = ./srcs/
 SRC =	philo \
 		routine \
-		threads_mutexes
+		threads_mutexes \
+		init
 C_FILES = $(addprefix $(SRC_PATH), $(SRC:=.c))
 OBJ = $(addprefix $(SRC_PATH), $(SRC:=.o))
 

@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 16:34:35 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/19 16:37:49 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:14:08 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,13 @@ pthread_mutex_t	*create_mutexes(int nb)
 {
 	int 			i;
 	pthread_mutex_t *mutex;
-	
-	mutex = NULL;
-	mutex = malloc(sizeof(pthread_mutex_t *) * nb);
+
+	mutex = malloc(sizeof(pthread_mutex_t) * nb);
 	if (!mutex)
 		return (mutex);
 	i = 0;
 	while (i < nb)
-	{
-		pthread_mutex_init(&mutex[i], NULL);
-		i++;
-	}
+		pthread_mutex_init(&mutex[i++], NULL);
 	return (mutex);
 }
 
@@ -42,22 +38,28 @@ void	destroy_mutexes(pthread_mutex_t *mutex, int nb)
 	}
 }
 
-// pthread_t	*create_threads(int nb)
-// {
-// 	int 		i;
-// 	pthread_t	*t;
-	
-// 	t = NULL;
-// 	t = malloc(sizeof(pthread_t *) * nb);
-// 	if (!t)
-// 		return (t);
-// 	i = 0;
-// 	while (i < nb)
-// 	{
-// 		i++;
-// 	}
-// 	return (t);
-// }
+pthread_t	*create_threads(t_philo *philo, int nb)
+{
+	int 		i;
+	pthread_t	*t;
+    t_philo     *head;
+
+    head = philo;
+	t = malloc(sizeof(pthread_t) * nb);
+	if (!t)
+		return (t);
+	i = 0;
+	while (i < nb)
+	{
+        if (pthread_create(&t[i++], NULL, &routine, (void *)head) != 0)
+		{
+			perror("pthread_create ");
+			exit(EXIT_FAILURE);
+		}
+		head = head->next;
+	}
+	return (t);
+}
 
 void    join_threads(pthread_t *t, int nb)
 {
