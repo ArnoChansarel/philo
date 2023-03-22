@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:01:12 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/22 15:50:35 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/22 17:48:02 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_isalldigit(char *str)
 
 int	detach_threads(pthread_t *t, t_philo *p, int nb)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < nb)
@@ -37,23 +37,9 @@ int	detach_threads(pthread_t *t, t_philo *p, int nb)
 	return (0);
 }
 
-void	print_list(t_philo *philo, int nb)
-{
-	int i = 1;//                                =>creer tableau d'index
-	t_philo *head = philo;
-
-	while (i <= nb * 2)
-	{
-		printf("philo numero %d\n", *head->num);
-		printf("time sleep = %d\n", *head->time_to_sleep);
-		head = head->next;
-		i++;
-	}
-}
-
 static int	check_all_meals(int nb, t_philo *philo)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < nb)
@@ -79,10 +65,6 @@ int	monitoring(t_data *data, t_philo *philo)
 		time = get_time_mili();
 		if (time >= head->last_meal + *philo->time_to_die)
 		{
-			// printf("check death\n");
-			// printf("time to die = %d\n", *philo->time_to_die);
-			// printf("%ld - %ld = %ld\n", time, head->last_meal, time - head->last_meal);
-			// printf("timetodie + last meal = %ld\n", *philo->time_to_die + philo->last_meal);
 			print_routine(philo, "died.");
 			pthread_mutex_lock(&data->mutex_print);
 			return (1);
@@ -92,7 +74,7 @@ int	monitoring(t_data *data, t_philo *philo)
 			if (check_all_meals(data->n_philo, philo))
 			{
 				pthread_mutex_lock(&data->mutex_print);
-				return(1);
+				return (1);
 			}	
 		}
 		head = head->next;

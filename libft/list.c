@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 13:35:48 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/22 14:32:21 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/22 17:48:44 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_philo	*ft_lstnew(int *content, t_data *data, pthread_mutex_t *m)
 	ele->last_meal = get_time_mili();
 	ele->print = &data->mutex_print;
 	ele->start = &data->start;
-    ele->next = NULL;
+	ele->next = NULL;
 	return (ele);
 }
 
@@ -67,19 +67,23 @@ void	ft_lstadd_back(t_philo **lst, t_philo *new)
 	last->next = new;
 }
 
-void	ft_lstclear(t_philo **lst)
+int	ft_lstclear(t_philo **lst, int nb)
 {
+	int		i;
 	t_philo	*tmp;
 
+	i = 0;
 	if (!lst)
-		return ;
+		return (1);
 	tmp = NULL;
-	while (*lst)
+	while (*lst && i < nb)
 	{
 		tmp = *lst;
 		*lst = (*lst)->next;
 		free(tmp);
+		i++;
 	}
+	return (1);
 }
 
 t_philo	*ft_lstlast(t_philo *lst)

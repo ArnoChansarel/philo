@@ -6,31 +6,16 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:54:13 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/22 15:51:26 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/22 17:30:33 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-/*
-MALLOC
-1 struct data
-1 pour chque struct philo
-1 tableau d'int
-1 tableau de mutex
-*/
-
-// ./philo 3 6000000 5000000 3000000
-/*
-etape 1 : parsing
-etape 2 : 
-etape 3 :
-etape 4 : cas d'erreur*/
-
 int	parser(int argc, char **av)
 {
-	int i;
-	
+	int	i;
+
 	if (argc != 5 && argc != 6)
 	{
 		printf("Please enter right number of arguments.\n");
@@ -48,23 +33,45 @@ int	parser(int argc, char **av)
 	return (0);
 }
 
-// 100 800 200 200 => failed
-
-int main(int argc, char **argv)
+void	*free_and_destroy(t_data *data)
 {
-	t_data			*data;
+	if (data->mutex)
+	{
+		destroy_mutexes(data->mutex, data->n_philo);
+		free(data->mutex);
+	}
+	if (data->philo_lst)
+	{
+		if (data->philo_lst->num)
+			free(data->philo_lst->num);
+		ft_lstclear(&data->philo_lst, data->n_philo);
+	}
+	if (data->threads)
+		free(data->threads);
+	free(data);
+	return (NULL);
+}
 
-	(void)argc;
-	(void)argv;
+int	main(int argc, char **argv)
+{
+	t_data	*data;
+
 	if (parser(argc, argv) == 0)
 	{
 		data = init_philo(argv);
-		// print_list(data->philo_lst, 2);
+		if (!data)
+			return (1);
+		if (data->n_philo == 1)
+		{
+			print_routine(data->philo_lst, "died.");
+			data = free_and_destroy(data);
+			return (0);
+		}
 		if (monitoring(data, data->philo_lst))
 		{
 			detach_threads(data->threads, data->philo_lst, data->n_philo);
-			destroy_mutexes(data->mutex, data->n_philo);
 			pthread_mutex_destroy(&data->mutex_print);
+			free_and_destroy(data);
 			return (0);
 		}
 		join_threads(data->threads, data->n_philo);
