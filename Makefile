@@ -6,7 +6,7 @@
 #    By: achansar <achansar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/17 13:37:55 by achansar          #+#    #+#              #
-#    Updated: 2023/03/20 16:27:11 by achansar         ###   ########.fr        #
+#    Updated: 2023/03/22 15:36:26 by achansar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,14 +16,16 @@ NAME = philo
 #ARGUMENTS
 CC = gcc
 FLAGS = -Wall -Werror -Wextra 
-SEG = -fsanitize=address -g
+SEG = #-fsanitize=address -g
+SEGT = -fsanitize=thread
 
 #PHILO FILES
 SRC_PATH = ./srcs/
 SRC =	philo \
 		routine \
 		threads_mutexes \
-		init
+		init \
+		utils
 C_FILES = $(addprefix $(SRC_PATH), $(SRC:=.c))
 OBJ = $(addprefix $(SRC_PATH), $(SRC:=.o))
 
@@ -38,10 +40,10 @@ LBFT_OBJ = $(addprefix $(LBFT_PATH), $(LBFT:=.o))
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LBFT_OBJ)
-	@ $(CC) $(FLAGS) $(SEG) $(OBJ) $(LBFT_OBJ) -o $(NAME)
+	@ $(CC) $(FLAGS) $(SEG) $(SEGT) $(OBJ) $(LBFT_OBJ) -o $(NAME)
 
 .c.o:
-	@ $(CC) $(FLAGS) $(SEG) -c $< -o $@
+	@ $(CC) $(FLAGS) $(SEG) $(SEGT) -c $< -o $@
 
 clean:
 	@rm -f $(OBJ) $(LBFT_OBJ)

@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 13:35:48 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/20 18:24:21 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/22 14:32:21 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 t_philo	*ft_lstnew(int *content, t_data *data, pthread_mutex_t *m)
 {
 	t_philo	*ele;
-	
-	(void)m;
+
 	ele = NULL;
 	ele = malloc(sizeof(t_philo));
 	if (!ele)
@@ -27,9 +26,11 @@ t_philo	*ft_lstnew(int *content, t_data *data, pthread_mutex_t *m)
 	ele->time_to_sleep = &data->time_to_sleep;
 	ele->times_eat = &data->times_eat;
 	ele->mutex = m;
+	ele->meal = 0;
+	ele->last_meal = get_time_mili();
+	ele->print = &data->mutex_print;
+	ele->start = &data->start;
     ele->next = NULL;
-	ele->last_meal = NULL;
-	gettimeofday(ele->last_meal, NULL);
 	return (ele);
 }
 
