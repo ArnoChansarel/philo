@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 15:43:49 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/22 17:44:08 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:27:55 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,29 @@ t_data	*create_elements(t_data *data)
 	return (0);
 }
 
+int	check_atoi(t_data *data, char **av)
+{
+	data->time_to_die = ft_atoi(av[2]);
+	data->time_to_eat = ft_atoi(av[3]);
+	data->time_to_sleep = ft_atoi(av[4]);
+	if (av[5])
+		data->times_eat = ft_atoi(av[5]);
+	else
+		data->times_eat = 0;
+	if (data->time_to_die == 0 || data->time_to_eat == 0
+		|| data->time_to_sleep == 0)
+		return (1);
+	return (0);
+}
+
+t_data	*free_and_return(t_data *data, char *str)
+{
+	printf("%s", str);
+	data = NULL;
+	free(data);
+	return (data);
+}
+
 t_data	*init_philo(char **av)
 {
 	t_data	*data;
@@ -76,19 +99,15 @@ t_data	*init_philo(char **av)
 	memset(data, '\0', sizeof(t_data));
 	data->n_philo = ft_atoi(av[1]);
 	if (data->n_philo == 0 || data->n_philo >= 1024)
-	{
-		printf("Wrong number of philosophers.\n");
-		free(data);
-		return (data);
-	}
-	data->time_to_die = ft_atoi(av[2]);
-	data->time_to_eat = ft_atoi(av[3]);
-	data->time_to_sleep = ft_atoi(av[4]);
-	if (av[5])
-		data->times_eat = ft_atoi(av[5]);
-	else
-		data->times_eat = 0;
+		return (free_and_return(data, "Wrong number of philosophers.\n"));
+	if (check_atoi(data, av))
+		return (free_and_return(data, "Wrong arguments.\n"));
 	data->start = get_time_mili();
 	create_elements(data);
+	if (!data)
+	{
+		printf("Issue allocating one of the elements.\n");
+		return (data);
+	}
 	return (data);
 }
