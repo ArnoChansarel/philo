@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:54:13 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/23 10:36:54 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/23 10:48:28 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	main(int argc, char **argv)
 			return (0);
 		}
 		join_threads(data->threads, data->n_philo);
-		system("leaks philo");
 		return (0);
 	}
 	return (1);
