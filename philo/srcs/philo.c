@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:54:13 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/23 11:20:43 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:57:19 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	parser(int argc, char **av)
 	return (0);
 }
 
-void	*free_and_destroy(t_data *data)
+t_data	*free_and_destroy(t_data *data)
 {
 	if (data->mutex)
 	{
@@ -48,8 +48,9 @@ void	*free_and_destroy(t_data *data)
 	}
 	if (data->threads)
 		free(data->threads);
+	data = NULL;
 	free(data);
-	return (NULL);
+	return (data);
 }
 
 int	main(int argc, char **argv)
@@ -61,13 +62,7 @@ int	main(int argc, char **argv)
 		data = init_philo(argv);
 		if (!data)
 			return (1);
-		if (data->n_philo == 1)
-		{
-			print_routine(data->philo_lst, "died.");
-			data = free_and_destroy(data);
-			return (0);
-		}
-		if (monitoring(data, data->philo_lst))
+		else if (monitoring(data, data->philo_lst))
 		{
 			detach_threads(data->threads, data->philo_lst, data->n_philo);
 			pthread_mutex_destroy(&data->mutex_print);

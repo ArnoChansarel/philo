@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 15:43:49 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/23 11:27:55 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:57:46 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,22 +46,13 @@ t_data	*create_elements(t_data *data)
 	data->mutex_print = p;
 	data->mutex = create_mutexes(data->n_philo);
 	if (!data->mutex)
-	{
-		data = free_and_destroy(data);
-		return (data);
-	}
+		return (free_and_destroy(data));
 	data->philo_lst = create_loop_list(data, philo, data->mutex);
 	if (*data->philo_lst->num == -1)
-	{
-		data = free_and_destroy(data);
-		return (data);
-	}
+		return (free_and_destroy(data));
 	data->threads = create_threads(data->philo_lst, data->n_philo);
 	if (data->threads)
-	{
-		data = free_and_destroy(data);
-		return (data);
-	}
+		return (free_and_destroy(data));
 	return (0);
 }
 
@@ -98,16 +89,11 @@ t_data	*init_philo(char **av)
 		return (data);
 	memset(data, '\0', sizeof(t_data));
 	data->n_philo = ft_atoi(av[1]);
-	if (data->n_philo == 0 || data->n_philo >= 1024)
+	if (data->n_philo < 2 || data->n_philo >= 1024)
 		return (free_and_return(data, "Wrong number of philosophers.\n"));
 	if (check_atoi(data, av))
 		return (free_and_return(data, "Wrong arguments.\n"));
 	data->start = get_time_mili();
 	create_elements(data);
-	if (!data)
-	{
-		printf("Issue allocating one of the elements.\n");
-		return (data);
-	}
 	return (data);
 }

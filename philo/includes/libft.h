@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 13:42:17 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/22 17:52:59 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:43:17 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int			ft_atoi(const char *str);
 int			ft_isalldigit(char *str);
 
 long		get_time_mili(void);
-void		*free_and_destroy(t_data *data);
+t_data		*free_and_destroy(t_data *data);
 void		print_routine(t_philo *philo, char *str);
 
 #endif
