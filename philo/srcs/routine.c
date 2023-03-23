@@ -6,21 +6,11 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 16:45:21 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/22 17:45:55 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/23 20:06:19 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
-long	get_time_mili(void)
-{
-	struct timeval	time;
-	long			time_m;
-
-	gettimeofday(&time, NULL);
-	time_m = (time.tv_sec * 1000) + (time.tv_usec / 1000);
-	return (time_m);
-}
 
 void	print_routine(t_philo *philo, char *str)
 {
@@ -29,17 +19,32 @@ void	print_routine(t_philo *philo, char *str)
 	time = get_time_mili();
 	pthread_mutex_lock(philo->print);
 	printf("%ld %d %s\n", time - *philo->start, *philo->num, str);
-	pthread_mutex_unlock(philo->print);
+	if (*philo->death == 0)
+		pthread_mutex_unlock(philo->print);
+}
+
+static int	usleep_custom(t_philo *philo, long time_to)
+{
+	long	start;
+	long	now;
+
+	start = get_time_mili();
+	while (*philo->death == 0)
+	{
+		now = get_time_mili();
+		if (now - start >= time_to)
+			break ;
+		if (usleep(10))
+			return (1);
+	}
+	return (0);
 }
 
 static int	sleeping(t_philo *philo)
 {
 	print_routine(philo, "is sleeping.");
-	if (usleep(*philo->time_to_sleep * 1000))
-	{
-		perror("usleep ");
+	if (usleep_custom(philo, *philo->time_to_sleep))
 		return (1);
-	}
 	return (0);
 }
 
@@ -52,11 +57,8 @@ static int	eating(t_philo *philo)
 	print_routine(philo, "is eating.");
 	philo->last_meal = get_time_mili();
 	philo->meal += 1;
-	if (usleep(*philo->time_to_eat * 1000))
-	{
-		perror("usleep ");
+	if (usleep_custom(philo, *philo->time_to_eat))
 		return (1);
-	}
 	pthread_mutex_unlock(philo->mutex);
 	pthread_mutex_unlock(philo->next->mutex);
 	return (0);
@@ -67,7 +69,13 @@ void	*routine(void *element)
 	t_philo	*philo;
 
 	philo = (t_philo *)element;
-	while (1)
+	if (*philo->num == *philo->next->num)
+	{
+		*philo->death = 1;
+		print_routine(philo, "died.");
+		return (NULL);
+	}
+	while (*philo->death == 0)
 	{
 		print_routine(philo, "is thinking.");
 		eating(philo);

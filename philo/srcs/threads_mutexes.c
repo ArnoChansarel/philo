@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 16:34:35 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/22 17:47:09 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/23 19:12:57 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,32 @@ pthread_mutex_t	*create_mutexes(int nb)
 		return (mutex);
 	i = 0;
 	while (i < nb)
-		pthread_mutex_init(&mutex[i++], NULL);
+	{
+		if (pthread_mutex_init(&mutex[i++], NULL))
+		{
+			mutex = NULL;
+			free(mutex);
+			break ;
+		}
+	}	
 	return (mutex);
 }
 
-void	destroy_mutexes(pthread_mutex_t *mutex, int nb)
+int	destroy_mutexes(pthread_mutex_t *mutex, int nb)
 {
 	int	i;
 
 	i = 0;
 	while (i < nb)
 	{
-		pthread_mutex_destroy(&mutex[i]);
-		i++;
+		if (pthread_mutex_destroy(&mutex[i++]))
+		{
+			mutex = NULL;
+			free(mutex);
+			return (1);
+		}
 	}
+	return (0);
 }
 
 pthread_t	*create_threads(t_philo *philo, int nb)
@@ -53,15 +65,17 @@ pthread_t	*create_threads(t_philo *philo, int nb)
 	{
 		if (pthread_create(&t[i++], NULL, &routine, (void *)head) != 0)
 		{
-			perror("pthread_create ");
-			exit(EXIT_FAILURE);
+			printf("Error : pthread_create\n");
+			t = NULL;
+			free(t);
+			return (t);
 		}
 		head = head->next;
 	}
 	return (t);
 }
 
-void	join_threads(pthread_t *t, int nb)
+int	join_threads(pthread_t *t, int nb)
 {
 	int	i;
 
@@ -70,8 +84,9 @@ void	join_threads(pthread_t *t, int nb)
 	{
 		if (pthread_join(t[i++], NULL) != 0)
 		{
-			perror("pthread_join ");
-			exit(EXIT_FAILURE);
+			printf("Error : pthread_join.\n");
+			return (1);
 		}
 	}
+	return (0);
 }

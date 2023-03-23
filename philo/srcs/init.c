@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 15:43:49 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/23 11:57:46 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/23 20:03:20 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,13 @@ static t_philo	*create_loop_list(t_data *data, t_philo *ph, pthread_mutex_t *m)
 t_data	*create_elements(t_data *data)
 {
 	t_philo			*philo;
-	pthread_mutex_t	p;
+	pthread_mutex_t	*p;
 
 	philo = NULL;
-	pthread_mutex_init(&p, NULL);
+	p = malloc(sizeof(pthread_mutex_t));
+	if (!p)
+		return (free_and_destroy(data));//             => PROTECT
+	pthread_mutex_init(p, NULL);
 	data->mutex_print = p;
 	data->mutex = create_mutexes(data->n_philo);
 	if (!data->mutex)
@@ -51,7 +54,7 @@ t_data	*create_elements(t_data *data)
 	if (*data->philo_lst->num == -1)
 		return (free_and_destroy(data));
 	data->threads = create_threads(data->philo_lst, data->n_philo);
-	if (data->threads)
+	if (!data->threads)
 		return (free_and_destroy(data));
 	return (0);
 }
@@ -68,6 +71,7 @@ int	check_atoi(t_data *data, char **av)
 	if (data->time_to_die == 0 || data->time_to_eat == 0
 		|| data->time_to_sleep == 0)
 		return (1);
+	data->death = 0;
 	return (0);
 }
 
@@ -89,7 +93,7 @@ t_data	*init_philo(char **av)
 		return (data);
 	memset(data, '\0', sizeof(t_data));
 	data->n_philo = ft_atoi(av[1]);
-	if (data->n_philo < 2 || data->n_philo >= 1024)
+	if (data->n_philo < 1 || data->n_philo >= 1024)
 		return (free_and_return(data, "Wrong number of philosophers.\n"));
 	if (check_atoi(data, av))
 		return (free_and_return(data, "Wrong arguments.\n"));

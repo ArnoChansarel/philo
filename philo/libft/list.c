@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 13:35:48 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/22 17:48:44 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/23 19:29:59 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ t_philo	*ft_lstnew(int *content, t_data *data, pthread_mutex_t *m)
 	ele->mutex = m;
 	ele->meal = 0;
 	ele->last_meal = get_time_mili();
-	ele->print = &data->mutex_print;
+	ele->print = data->mutex_print;
 	ele->start = &data->start;
+	ele->death = &data->death;
 	ele->next = NULL;
 	return (ele);
 }

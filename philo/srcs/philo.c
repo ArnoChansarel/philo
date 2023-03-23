@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:54:13 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/23 11:57:19 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/23 20:12:03 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@ int	parser(int argc, char **av)
 
 t_data	*free_and_destroy(t_data *data)
 {
+	if (data->mutex_print)
+	{
+		// printf("CRASH ?\n");
+		free(data->mutex_print);
+		// printf(" CRASH PAS ?\n");
+	}
 	if (data->mutex)
 	{
 		destroy_mutexes(data->mutex, data->n_philo);
@@ -47,7 +53,9 @@ t_data	*free_and_destroy(t_data *data)
 		ft_lstclear(&data->philo_lst, data->n_philo);
 	}
 	if (data->threads)
+	{
 		free(data->threads);
+	}
 	data = NULL;
 	free(data);
 	return (data);
@@ -64,12 +72,19 @@ int	main(int argc, char **argv)
 			return (1);
 		else if (monitoring(data, data->philo_lst))
 		{
-			detach_threads(data->threads, data->philo_lst, data->n_philo);
-			pthread_mutex_destroy(&data->mutex_print);
+			// detach_threads(data->threads, data->philo_lst, data->n_philo);
+			// pthread_mutex_unlock(data->mutex_print);
+			if (pthread_mutex_destroy(data->mutex_print))//      Unknown error
+			{
+				printf("crame\n");
+				free_and_destroy(data);
+				return (1);
+			}
 			free_and_destroy(data);
 			return (0);
 		}
-		join_threads(data->threads, data->n_philo);
+		if (join_threads(data->threads, data->n_philo))
+			return (1);
 		return (0);
 	}
 	return (1);

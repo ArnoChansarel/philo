@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 13:42:17 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/23 11:43:17 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/23 19:26:06 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_philo {
 	pthread_mutex_t	*print;
 	struct s_philo	*next;
 	long			*start;
+	_Atomic int		*death;
 }	t_philo;
 
 typedef struct s_data {
@@ -42,9 +43,10 @@ typedef struct s_data {
 	int				time_to_sleep;
 	int				times_eat;
 	pthread_mutex_t	*mutex;
-	pthread_mutex_t	mutex_print;
+	pthread_mutex_t	*mutex_print;
 	t_philo			*philo_lst;
 	pthread_t		*threads;
+	_Atomic int		death;
 	long			start;
 }	t_data;
 
