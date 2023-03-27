@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:01:12 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/27 18:49:55 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/27 18:53:50 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,11 @@ static int	check_all_meals(int nb, t_philo *philo)
 	while (i < nb)
 	{
 		if (philo->meal < *philo->times_eat)
-		{
-			*philo->death = 1;
 			return (0);
-		}
 		i++;
 		philo = philo->next;
 	}
+	*philo->death = 1;
 	return (1);
 }
 
