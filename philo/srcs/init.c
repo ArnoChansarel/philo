@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 15:43:49 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/23 20:03:20 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/27 18:50:58 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_data	*create_elements(t_data *data)
 	philo = NULL;
 	p = malloc(sizeof(pthread_mutex_t));
 	if (!p)
-		return (free_and_destroy(data));//             => PROTECT
+		return (free_and_destroy(data));
 	pthread_mutex_init(p, NULL);
 	data->mutex_print = p;
 	data->mutex = create_mutexes(data->n_philo);

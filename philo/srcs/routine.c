@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 16:45:21 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/27 17:24:35 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/27 18:34:56 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	usleep_custom(t_philo *philo, long time_to)
 		now = get_time_mili();
 		if (now - start >= time_to)
 			break ;
-		if (usleep(100))
+		if (usleep(200))
 			return (1);
 	}
 	return (0);
@@ -54,8 +54,8 @@ static int	eating(t_philo *philo)
 	print_routine(philo, "has taken a fork.");
 	pthread_mutex_lock(philo->next->mutex);
 	print_routine(philo, "has taken a fork.");
-	print_routine(philo, "is eating.");
 	philo->last_meal = get_time_mili();
+	print_routine(philo, "is eating.");
 	philo->meal += 1;
 	if (usleep_custom(philo, *philo->time_to_eat))
 		return (1);

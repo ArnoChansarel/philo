@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:54:32 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/23 19:21:34 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/27 18:50:32 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 t_data			*init_philo(char **av);
 pthread_mutex_t	*create_mutexes(int nb);
-
+int				parser(int argc, char **av);
 void			*routine(void *element);
 pthread_t		*create_threads(t_philo *philo, int nb);
 int				join_threads(pthread_t *t, int nb);
