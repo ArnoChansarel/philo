@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 16:45:21 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/23 20:06:19 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/27 17:24:35 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	print_routine(t_philo *philo, char *str)
 
 	time = get_time_mili();
 	pthread_mutex_lock(philo->print);
-	printf("%ld %d %s\n", time - *philo->start, *philo->num, str);
 	if (*philo->death == 0)
-		pthread_mutex_unlock(philo->print);
+		printf("%ld %d %s\n", time - *philo->start, *philo->num, str);
+	pthread_mutex_unlock(philo->print);
 }
 
 static int	usleep_custom(t_philo *philo, long time_to)
@@ -34,7 +34,7 @@ static int	usleep_custom(t_philo *philo, long time_to)
 		now = get_time_mili();
 		if (now - start >= time_to)
 			break ;
-		if (usleep(10))
+		if (usleep(100))
 			return (1);
 	}
 	return (0);
@@ -71,8 +71,8 @@ void	*routine(void *element)
 	philo = (t_philo *)element;
 	if (*philo->num == *philo->next->num)
 	{
-		*philo->death = 1;
 		print_routine(philo, "died.");
+		*philo->death = 1;
 		return (NULL);
 	}
 	while (*philo->death == 0)

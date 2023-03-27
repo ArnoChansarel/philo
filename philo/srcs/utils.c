@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:01:12 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/23 20:05:58 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/27 17:17:14 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,21 +70,32 @@ int	monitoring(t_data *data, t_philo *philo)
 	long	time;
 
 	head = philo;
-	while (head && data->death == 0)
+	while (head)
 	{
 		time = get_time_mili();
-		if (time >= head->last_meal + *philo->time_to_die)
+		if ((time - *philo->start) - (head->last_meal - *philo->start) > *philo->time_to_die)//         watchout >=
 		{
-			data->death = 1;
+			// printf("AFTER CONDITION\n");
+			// printf("time = %ld\n", time - *philo->start);
+			// printf("%ld >= %d\n", time - head->last_meal, *philo->time_to_die);
+			// printf("lastmeal = %ld = %ld\n", head->last_meal, head->last_meal - *philo->start);
+			// printf("time - meal = %ld et >= a %d\n", (time - *philo->start) - (head->last_meal - *philo->start), *philo->time_to_die);
 			// pthread_mutex_lock(data->mutex_print);
 			print_routine(philo, "died.");
+			data->death = 1;
+			// printf("AFTER CONDITION\n");
+			// printf("time = %ld\n", time - *philo->start);
+			// printf("%ld >= %d\n", time - head->last_meal, *philo->time_to_die);
+			// printf("lastmeal = %ld = %ld\n", head->last_meal, head->last_meal - *philo->start);
+			// printf("time - meal = %ld et >= a %d\n", (time - *philo->start) - (head->last_meal - *philo->start), *philo->time_to_die);
 			return (1);
 		}
 		if (data->times_eat)
 		{
 			if (check_all_meals(data->n_philo, philo))
 			{
-				pthread_mutex_lock(data->mutex_print);
+				// pthread_mutex_lock(data->mutex_print);
+				data->death = 1;
 				return (1);
 			}	
 		}

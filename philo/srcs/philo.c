@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:54:13 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/23 20:12:03 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/27 17:11:40 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,18 @@ t_data	*free_and_destroy(t_data *data)
 	return (data);
 }
 
+
+/*
+5 800 200 200 7 => segfault ?
+4 410 200 200 10 => segfault ? 10 meals ?
+200 800 200 200 => 2 sec ???
+
+NO DIE
+5 600 150 150
+4 410 200 200
+100 800 200 200
+105 800 200 200
+*/
 int	main(int argc, char **argv)
 {
 	t_data	*data;
@@ -70,10 +82,9 @@ int	main(int argc, char **argv)
 		data = init_philo(argv);
 		if (!data)
 			return (1);
-		else if (monitoring(data, data->philo_lst))
-		{
-			// detach_threads(data->threads, data->philo_lst, data->n_philo);
+		monitoring(data, data->philo_lst);
 			// pthread_mutex_unlock(data->mutex_print);
+		join_threads(data->threads, data->n_philo);
 			if (pthread_mutex_destroy(data->mutex_print))//      Unknown error
 			{
 				printf("crame\n");
@@ -82,10 +93,6 @@ int	main(int argc, char **argv)
 			}
 			free_and_destroy(data);
 			return (0);
-		}
-		if (join_threads(data->threads, data->n_philo))
-			return (1);
-		return (0);
 	}
 	return (1);
 }

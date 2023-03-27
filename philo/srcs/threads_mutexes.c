@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 16:34:35 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/23 19:12:57 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/27 17:04:40 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,16 @@ int	join_threads(pthread_t *t, int nb)
 	int	i;
 
 	i = 0;
+	// printf("joining threads\n");
 	while (i < nb)
 	{
+		// printf("thread %d is joined\n", i);
 		if (pthread_join(t[i++], NULL) != 0)
 		{
 			printf("Error : pthread_join.\n");
 			return (1);
 		}
 	}
+	// printf("All joined.\n");
 	return (0);
 }
