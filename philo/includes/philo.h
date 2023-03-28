@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:54:32 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/27 18:50:32 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/28 18:23:54 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ pthread_t		*create_threads(t_philo *philo, int nb);
 int				join_threads(pthread_t *t, int nb);
 int				destroy_mutexes(pthread_mutex_t *mutex, int nb);
 int				monitoring(t_data *data, t_philo *philo);
-int				detach_threads(pthread_t *t, t_philo *p, int nb);
+void			unlock_all(t_data *data);
 
 #endif

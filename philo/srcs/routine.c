@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 16:45:21 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/27 18:34:56 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/28 18:14:57 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	print_routine(t_philo *philo, char *str)
 {
 	long	time;
 
-	time = get_time_mili();
 	pthread_mutex_lock(philo->print);
+	time = get_time_mili();
 	if (*philo->death == 0)
 		printf("%ld %d %s\n", time - *philo->start, *philo->num, str);
 	pthread_mutex_unlock(philo->print);
@@ -77,9 +77,9 @@ void	*routine(void *element)
 	}
 	while (*philo->death == 0)
 	{
-		print_routine(philo, "is thinking.");
 		eating(philo);
 		sleeping(philo);
+		print_routine(philo, "is thinking.");
 	}
 	return (NULL);
 }

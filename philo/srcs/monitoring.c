@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:01:12 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/27 18:53:50 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/28 18:23:37 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	check_all_meals(int nb, t_philo *philo)
 	return (1);
 }
 
-static void	unlock_all(t_data *data)
+void	unlock_all(t_data *data)
 {
 	int		i;
 	t_philo	*head;
@@ -60,14 +60,13 @@ int	monitoring(t_data *data, t_philo *philo)
 	head = philo;
 	while (head)
 	{
-		if (head->mutex)
+		usleep(100);
 		time = get_time_mili();
 		if ((time - *philo->start) - (head->last_meal - *philo->start)
 			> *philo->time_to_die)
 		{
 			print_routine(philo, "died.");
 			data->death = 1;
-			unlock_all(data);
 			return (1);
 		}
 		if (data->times_eat)

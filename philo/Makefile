@@ -6,7 +6,7 @@
 #    By: achansar <achansar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/17 13:37:55 by achansar          #+#    #+#              #
-#    Updated: 2023/03/27 18:20:05 by achansar         ###   ########.fr        #
+#    Updated: 2023/03/28 18:23:01 by achansar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME = philo
 CC = gcc
 FLAGS = -Wall -Werror -Wextra -pthread
 SEG = #-fsanitize=address -g
-SEGT = -fsanitize=thread
+SEGT = #-fsanitize=thread
 
 #PHILO FILES
 SRC_PATH = ./srcs/

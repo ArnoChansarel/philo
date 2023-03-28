@@ -6,7 +6,7 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 18:11:13 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/27 18:18:42 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/28 15:38:48 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ t_data	*free_and_destroy(t_data *data)
 	}
 	if (data->threads)
 		free(data->threads);
-	data = NULL;
 	free(data);
 	return (data);
 }
