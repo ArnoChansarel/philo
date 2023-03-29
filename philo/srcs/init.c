@@ -6,11 +6,34 @@
 /*   By: achansar <achansar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 15:43:49 by achansar          #+#    #+#             */
-/*   Updated: 2023/03/27 18:50:58 by achansar         ###   ########.fr       */
+/*   Updated: 2023/03/29 14:18:17 by achansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+int	check_atoi(t_data *data, char **av)
+{
+	data->time_to_die = ft_atoi(av[2]);
+	data->time_to_eat = ft_atoi(av[3]);
+	data->time_to_sleep = ft_atoi(av[4]);
+	if (av[5])
+		data->times_eat = ft_atoi(av[5]);
+	else
+		data->times_eat = 0;
+	if (data->time_to_die == 0 || data->time_to_eat == 0
+		|| data->time_to_sleep == 0)
+		return (1);
+	data->death = 0;
+	return (0);
+}
+
+t_data	*free_and_return(t_data *data, char *str)
+{
+	printf("%s", str);
+	free(data);
+	return (data);
+}
 
 static t_philo	*create_loop_list(t_data *data, t_philo *ph, pthread_mutex_t *m)
 {
@@ -57,30 +80,6 @@ t_data	*create_elements(t_data *data)
 	if (!data->threads)
 		return (free_and_destroy(data));
 	return (0);
-}
-
-int	check_atoi(t_data *data, char **av)
-{
-	data->time_to_die = ft_atoi(av[2]);
-	data->time_to_eat = ft_atoi(av[3]);
-	data->time_to_sleep = ft_atoi(av[4]);
-	if (av[5])
-		data->times_eat = ft_atoi(av[5]);
-	else
-		data->times_eat = 0;
-	if (data->time_to_die == 0 || data->time_to_eat == 0
-		|| data->time_to_sleep == 0)
-		return (1);
-	data->death = 0;
-	return (0);
-}
-
-t_data	*free_and_return(t_data *data, char *str)
-{
-	printf("%s", str);
-	data = NULL;
-	free(data);
-	return (data);
 }
 
 t_data	*init_philo(char **av)
