@@ -14,10 +14,15 @@ $> make
 $> ./philo 5 800 200 150 7
 ```
 > Où :
+>
 >   5 -> nombre de philosophes
+>
 >   800 -> temps (ms) qu'un philo mets pour mourir
+>
 >   200 -> temps (ms) qu'un philo mets pour manger
+>
 >   150 -> temps (ms) qu'un philo mets pour dormir
+>
 >   7 -> nombre minimum de repas mangés avant de finir la simulation (optionnel)
 
 ## Fonctionnement
