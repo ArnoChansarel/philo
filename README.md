@@ -32,7 +32,7 @@ Un thread est un suite d'instruction executée indépendamment des autres thread
 Etant donné que les threads partagent le même espace mémoire alloué au processus, ils partagent ainsi les mêmes variables et structures de données. Contrairement aux processus, ils communiquent donc entre eux, ce qui servira un but différent. Cependant, cette possibilité vient avec certains problèmes dont il faudra proteger notre programme :
 Le probleme des [datarace](https://www.youtube.com/watch?v=FY9livorrJI&list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2&index=3) survient lorsque plusieurs threads cherchent à acceder simultanément une même variable. Il convient alors de protéger ces dernières avec un système de **mutex** pour éviter des conflits.
 
-<img src="docs/threqd.jpeg" width="100%">
+<img src="docs/thread.jpeg" width="100%">
 
 Un mutex est une structure de données qui agi sur la variable comme un verrou. Lorsqu'un thread lock un mutex sur une variable, il s'en réserve l'accès jusqu'à l'avoir dévérouillée. Pendant ce temps, si un autre thread cherche à y accéder, il devra attendre patiemment que la variable soit accessible. Une bonne utilisation des mutex va donc permettre de gérer une grande partie des problèmes de ce projet.
 On verra que j'utilise aussi des variables atomiques (notées Atomic_). Ces variables vont fonctionner sur le même principe que si elles étaient protégées par un mutex, c'est a dire qu'une opération est garantie d'être effectuée dans son intégralité sans qu'un autre thread vienne y avoir accès. Ces variables atomiques sont plus faciles à utiliser que les mutex surtout dans le cas de petites opérations. Il aurait été possible pour ce projet de se passer de mutex, mais pour les besoins d'apprentissage nous utiliserons les deux.
